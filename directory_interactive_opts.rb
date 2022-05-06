@@ -35,7 +35,7 @@ end
 
 def print_students_with_initial(students, letter)
   students.each_with_index do |student, index|
-    if student[:name][0] == letter
+    if student[:name][0].casecmp?(letter) 
       puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
@@ -51,7 +51,7 @@ def get_student_initial
   end
   initial
 end
-  
+
 # nothing happens until we call the methods
 students = input_students
 print_header
