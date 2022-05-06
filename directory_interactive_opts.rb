@@ -41,6 +41,15 @@ def print_students_with_initial(students, letter)
   end
 end
 
+def print_students_with_initial_short_names(students, letter, length_less_than)
+
+  students.each_with_index do |student, index|
+    if student[:name][0].casecmp?(letter) && student[:name].length < length_less_than 
+      puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
 def get_student_initial
   while true
     puts "Please enter initial of students whose names you'd like to print"
@@ -53,9 +62,10 @@ def get_student_initial
 end
 
 # nothing happens until we call the methods
+NAME_LENGTH_LESS_THAN = 12
 students = input_students
 print_header
 initial = get_student_initial
 # print(students)
-print_students_with_initial(students, initial)
+print_students_with_initial_short_names(students, initial, NAME_LENGTH_LESS_THAN)
 print_footer(students)
