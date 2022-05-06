@@ -33,8 +33,29 @@ def print_footer(students)
   puts "Overall, we have #{students.count} great students"
 end
 
+def print_students_with_initial(students, letter)
+  students.each_with_index do |student, index|
+    if student[:name][0] == letter
+      puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
+def get_student_initial
+  while true
+    puts "Please enter initial of students whose names you'd like to print"
+    initial = gets.chomp[0]
+    unless initial.empty?
+      break
+    end
+  end
+  initial
+end
+  
 # nothing happens until we call the methods
 students = input_students
 print_header
-print(students)
+initial = get_student_initial
+# print(students)
+print_students_with_initial(students, initial)
 print_footer(students)
