@@ -43,10 +43,17 @@ end
 
 def print_students_with_initial_short_names(students, letter, length_less_than)
 
-  students.each_with_index do |student, index|
-    if student[:name][0].casecmp?(letter) && student[:name].length < length_less_than 
-      puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+#  students.each_with_index do |student, index|
+#    if student[:name][0].casecmp?(letter) && student[:name].length < length_less_than 
+#      puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+#    end
+#  end
+  i = 0
+  while i < students.length
+    if students[i][:name][0].casecmp?(letter) && students[i][:name].length < length_less_than 
+      puts "#{i+1}. #{students[i][:name]} (#{students[i][:cohort]} cohort)"
     end
+    i += 1
   end
 end
 
