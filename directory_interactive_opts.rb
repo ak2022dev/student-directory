@@ -61,37 +61,21 @@ def print_footer(students)
   puts "Overall, we have #{students.count} great students"
 end
 
-def print_padded_students_initial_short_names(students, letter, length_less_than)
-    i = 0
-    while i < students.length
-      if students[i][:name][0].casecmp?(letter) && students[i][:name].length < length_less_than 
-        # puts "#{i+1}. #{students[i][:name]} (#{students[i][:cohort]} cohort)"
-        print "#{i+1}".center(NUMBER_WIDTH)
-        print "#{students[i][:name]}".center(NAME_WIDTH)
-        puts "#{students[i][:cohort]}".center(COHORT_WIDTH)
-      end
-      i += 1
-    end
-end
-  
-def get_student_initial
-  # output blank line
-  puts ""
-  while true
-    puts "Please enter initial of students whose names you'd like to print"
-    initial = gets.chomp
-    unless initial.empty?
-      initial = initial[0]
-      break
-    end
+# TODO: need to adapt this
+def print_padded_students(students)
+  i = 0
+  while i < students.length
+    # puts "#{i+1}. #{students[i][:name]} (#{students[i][:cohort]} cohort)"
+    print "#{i+1}".center(NUMBER_WIDTH)
+    print "#{students[i][:name]}".center(NAME_WIDTH)
+    puts "#{students[i][:cohort]}".center(COHORT_WIDTH)
+    i += 1
   end
-  initial
 end
 
 # set some constants
-NAME_LENGTH_LESS_THAN = 12
 NUMBER_WIDTH = 6
-NAME_WIDTH = 14
+NAME_WIDTH = 27   # Assumption less than 25 in length
 COHORT_WIDTH = 10
 DEFAULT_COHORT = :november
 COHORT_STRINGS = [ "january", "february", "march", "april",
@@ -99,7 +83,6 @@ COHORT_STRINGS = [ "january", "february", "march", "april",
                    "october", "november", "december" ]
 # nothing happens until we call the methods
 students = input_students_and_cohorts
-initial = get_student_initial
 print_padded_header
-print_padded_students_initial_short_names(students, initial, NAME_LENGTH_LESS_THAN)
+print_padded_students(students)
 print_footer(students)
