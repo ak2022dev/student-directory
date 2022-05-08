@@ -1,3 +1,5 @@
+require 'set'
+
 def input_students_and_cohorts
   # create an empty array
   students = []
@@ -50,7 +52,6 @@ def print_padded_header
   puts ""
   puts "The students of Villains Academy"
   puts "--------------------------------"
-  print "Num".center(NUMBER_WIDTH)
   print "Name".center(NAME_WIDTH)
   puts "Cohort".center(COHORT_WIDTH)
 end
@@ -61,15 +62,19 @@ def print_footer(students)
   puts "Overall, we have #{students.count} great students"
 end
 
-# TODO: need to adapt this
-def print_padded_students(students)
-  i = 0
-  while i < students.length
-    # puts "#{i+1}. #{students[i][:name]} (#{students[i][:cohort]} cohort)"
-    print "#{i+1}".center(NUMBER_WIDTH)
-    print "#{students[i][:name]}".center(NAME_WIDTH)
-    puts "#{students[i][:cohort]}".center(COHORT_WIDTH)
-    i += 1
+def print_padded_students_grouped(students)
+  # build a set of cohorts
+  cohort_set = Set.new
+  students.each do |hash_pair|
+    cohort_set.add(hash_pair[:cohort])
+  end
+  cohort_set.each do |match|
+    students.each do |hash_pair|
+      if hash_pair[:cohort] == match
+        print "#{hash_pair[:name]}".center(NAME_WIDTH)
+        puts "#{hash_pair[:cohort]}".center(COHORT_WIDTH)
+      end
+    end
   end
 end
 
@@ -83,6 +88,7 @@ COHORT_STRINGS = [ "january", "february", "march", "april",
                    "october", "november", "december" ]
 # nothing happens until we call the methods
 students = input_students_and_cohorts
+puts students
 print_padded_header
-print_padded_students(students)
+print_padded_students_grouped(students)
 print_footer(students)
