@@ -8,7 +8,9 @@ def input_students_and_cohorts
   while true
     puts "Please enter the names and cohorts of the students"
     puts "To finish, type stop"
-    name = gets.chomp
+#    name = gets.chomp
+    name = gets
+    name = name.delete_suffix("\n")
     if name == "stop"
       break
     end
