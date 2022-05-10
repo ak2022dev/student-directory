@@ -41,8 +41,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the student list"
+  puts "4. Load the student list"
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -64,12 +64,12 @@ def process(selection)
       puts ""
     when "3"
       puts_padded_message("You have chosen the option to save the list of students")
-      save_students
-      puts_padded_message("The list of students has been saved to students.csv")
+      choose_file_save_students
+      puts_padded_message("The list of students has been saved")
     when "4"
       puts_padded_message("You have chosen the option to load the list of students")
-      load_students
-      puts_padded_message("The list of students has been loaded from students.csv")
+      choose_file_load_students
+      puts_padded_message("The list of students has been loaded")
     when "9"
       puts_padded_message("You have chosen the option to exit")
       exit # this will cause the program to terminate
@@ -84,9 +84,16 @@ def puts_padded_message( message )
   puts ""
 end
 
-def save_students
+def choose_file_save_students
+  # allow user to choose filename
+  filename = get_filename
+  # save student details
+  save_students(filename)
+end
+
+def save_students(filename)
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -96,7 +103,7 @@ def save_students
   file.close
 end
 
-def try_load_students
+def try_initial_load
   filename = ARGV.first # first argument from the command line
   return if filename.nil? # get out of the method if it isn't given
   if File.exist?(filename) # if it exists
@@ -108,11 +115,19 @@ def try_load_students
   end
 end
 
-def load_students(filename = "students.csv")
+def choose_file_load_students
+  # allow user to choose filename
+  filename = get_filename
+  # load from file
+  load_students(filename)
+end
+
+def load_students(filename)
+  # need to deal with nil filename
+  # need to deal with file not existing
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-#    @students << {name: name, cohort: cohort.to_sym}
     add_student_and_cohort(name, cohort.to_sym)
   end
   file.close
@@ -123,7 +138,19 @@ def add_student_and_cohort(name, cohort)
   @students << {name: name, cohort: cohort}
 end
 
-DEFAULT_COHORT = :november
+def get_filename
+  puts "Entered get_filename"
+  puts ""
+  print "Enter the name of the file (default students.csv if none given): "
+  filename = STDIN.gets.chomp
+  if filename.empty? 
+    filename = DEFAULT_FILENAME
+  end
+  puts "Exiting get_filename with file #{filename}"
+  return filename
+end
 
-try_load_students
+DEFAULT_COHORT = :november
+DEFAULT_FILENAME = "students.csv"
+try_initial_load
 interactive_menu
