@@ -55,18 +55,33 @@ end
 def process(selection)
   case selection
     when "1"
+      puts_padded_message("You have chosen the option to input students")
       input_students
+      puts ""
     when "2"
+      puts_padded_message("You have chosen the option to show students")
       show_students
+      puts ""
     when "3"
+      puts_padded_message("You have chosen the option to save the list of students")
       save_students
+      puts_padded_message("The list of students has been saved to students.csv")
     when "4"
+      puts_padded_message("You have chosen the option to load the list of students")
       load_students
+      puts_padded_message("The list of students has been loaded from students.csv")
     when "9"
+      puts_padded_message("You have chosen the option to exit")
       exit # this will cause the program to terminate
     else
       puts "I don't know what you mean, try again"
   end
+end
+
+def puts_padded_message( message )
+  # prints message including vertical spacing before and after
+  puts "\n\n#{message}"
+  puts ""
 end
 
 def save_students
