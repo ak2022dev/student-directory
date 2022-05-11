@@ -97,14 +97,15 @@ def save_students(filename)
     return
   end
   # open the file for writing
-  file = File.open(filename, "w") # at some stage process error here?
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  File.open(filename, "w") do |f| # at some stage process error here?
+    # iterate over the array of students
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      f.puts csv_line
+    end
   end
-  file.close
+  # above block will close file automatically
 end
 
 def try_initial_load
@@ -125,12 +126,16 @@ def load_students(filename)
   # need to deal with nil filename
   # exit if file doesn't exist
   check_file_exists(filename)
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_student_and_cohort(name, cohort.to_sym)
+  # empty current students list
+  # as assuming all of them are to come from a single file
+  @students = []
+  File.open(filename, "r") do |f|
+    f.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      add_student_and_cohort(name, cohort.to_sym)
+    end
   end
-  file.close
+  # above block closes file automatically
 end
 
 def add_student_and_cohort(name, cohort)
