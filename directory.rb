@@ -8,7 +8,6 @@ def input_students
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
-#    @students << {name: name, cohort: :november}
     add_student_and_cohort(name, DEFAULT_COHORT)
     puts "Now we have #{@students.count} students"
     # get another name from the user
@@ -92,6 +91,11 @@ def choose_file_save_students
 end
 
 def save_students(filename)
+  # output error and return if filename not valid
+  if filename.nil? || filename.empty?
+    puts "Invalid filename. Can't save student data"
+    return
+  end
   # open the file for writing
   file = File.open(filename, "w") # at some stage process error here?
   # iterate over the array of students
