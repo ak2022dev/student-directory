@@ -93,7 +93,7 @@ end
 
 def save_students(filename)
   # open the file for writing
-  file = File.open(filename, "w")
+  file = File.open(filename, "w") # at some stage process error here?
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -106,13 +106,8 @@ end
 def try_initial_load
   filename = ARGV.first # first argument from the command line
   return if filename.nil? # get out of the method if it isn't given
-  if File.exist?(filename) # if it exists
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist."
-    exit # quit the program
-  end
+  load_students(filename)
+  puts "Loaded #{@students.count} from #{filename}"
 end
 
 def choose_file_load_students
@@ -124,7 +119,8 @@ end
 
 def load_students(filename)
   # need to deal with nil filename
-  # need to deal with file not existing
+  # exit if file doesn't exist
+  check_file_exists(filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
@@ -139,16 +135,25 @@ def add_student_and_cohort(name, cohort)
 end
 
 def get_filename
-  puts "Entered get_filename"
   puts ""
   print "Enter the name of the file (default students.csv if none given): "
   filename = STDIN.gets.chomp
   if filename.empty? 
     filename = DEFAULT_FILENAME
   end
-  puts "Exiting get_filename with file #{filename}"
   return filename
 end
+
+def check_file_exists(filename)
+  # check file exists and exit if not
+  if File.exist?(filename)
+    return true
+  else 
+    # exit from unrecoverable error?
+    puts "File #{filename} doesn't exist. Exiting program."
+    exit
+  end
+end  
 
 DEFAULT_COHORT = :november
 DEFAULT_FILENAME = "students.csv"
